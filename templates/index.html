@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Shared Expenses — Soumajit & Rimpa</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Shared Expenses</h1>
+      <p class="subtitle">Simple tracker for {{ NAME_MAP['me'] }} and {{ NAME_MAP['her'] }}</p>
+    </header>
+
+    <section class="card">
+      <h2>Add Expense</h2>
+      <form action="{{ url_for('add_expense') }}" method="post" class="form">
+        <div class="row">
+          <label>Date</label>
+          <input type="date" name="date" value="{{ ('' ) }}" />
+        </div>
+
+        <div class="row">
+          <label>Payer</label>
+          <select name="payer" required>
+            <option value="me">{{ NAME_MAP['me'] }}</option>
+            <option value="her">{{ NAME_MAP['her'] }}</option>
+          </select>
+        </div>
+
+        <div class="row">
+          <label>Item</label>
+          <input type="text" name="item" placeholder="eg: Groceries, Movie tickets" />
+        </div>
+
+        <div class="row">
+          <label>Amount (₹)</label>
+          <input type="number" step="0.01" name="amount" placeholder="0.00" required />
+        </div>
+
+        <div class="row">
+          <button type="submit" class="btn">Add</button>
+          <a href="{{ url_for('summary') }}" class="btn outline">Monthly Summary</a>
+        </div>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>All Expenses</h2>
+      {% if expenses %}
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Payer</th>
+              <th>Item</th>
+              <th class="right">Amount (₹)</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for e in expenses %}
+            <tr>
+              <td>{{ e.date }}</td>
+              <td>{{ NAME_MAP[e.payer] }}</td>
+              <td>{{ e.item }}</td>
+              <td class="right">{{ '%.2f'|format(e.amount) }}</td>
+              <td class="center">
+                <form action="{{ url_for('delete_expense', expense_id=e.id) }}" method="post" onsubmit="return confirm('Delete this expense?');">
+                  <button type="submit" class="btn small red">Delete</button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p>No expenses yet. Add your first one!</p>
+      {% endif %}
+    </section>
+
+    <footer>
+      <small>Built for two — simple & private.</small>
+    </footer>
+  </div>
+</body>
+</html>

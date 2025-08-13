@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Monthly Summary — Shared Expenses</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Monthly Summary</h1>
+      <p class="subtitle">Who paid what this month — {{ NAME_MAP['me'] }} & {{ NAME_MAP['her'] }}</p>
+    </header>
+
+    <section class="card">
+      <form method="get" action="{{ url_for('summary') }}" class="inline-form">
+        <label>Select month</label>
+        <select name="month">
+          {% for m in months %}
+            <option value="{{ m.month }}" {% if m.month==selected_month and m.year==selected_year %}selected{% endif %}>{{ m.label }}</option>
+          {% endfor %}
+        </select>
+        <input type="hidden" name="year" value="{{ selected_year }}">
+        <button class="btn">Show</button>
+        <a href="{{ url_for('export_csv', month=selected_month, year=selected_year) }}" class="btn" style="background:#0ea5a4;margin-left:8px">Download CSV</a>
+        <a href="{{ url_for('export_pdf', month=selected_month, year=selected_year) }}" class="btn" style="background:#111827;margin-left:8px">Download PDF</a>
+        <a href="{{ url_for('index') }}" class="btn outline" style="margin-left:8px">Back</a>
+      </form>
+
+      <div class="summary-grid">
+        <div class="box">
+          <h3>{{ NAME_MAP['me'] }} paid</h3>
+          <p class="big">₹{{ '%.2f'|format(me_total) }}</p>
+        </div>
+        <div class="box">
+          <h3>{{ NAME_MAP['her'] }} paid</h3>
+          <p class="big">₹{{ '%.2f'|format(her_total) }}</p>
+        </div>
+        <div class="box">
+          <h3>Total</h3>
+          <p class="big">₹{{ '%.2f'|format(total) }}</p>
+        </div>
+        <div class="box">
+          <h3>Equal share</h3>
+          <p class="big">₹{{ '%.2f'|format(share) }}</p>
+        </div>
+      </div>
+
+      <div class="result">
+        <h3>Result</h3>
+        <p class="message">{{ message }}</p>
+      </div>
+
+      <hr />
+
+      <h3>Expenses list</h3>
+      {% if rows %}
+        <table class="table">
+          <thead>
+            <tr><th>Date</th><th>Payer</th><th>Item</th><th class="right">Amount (₹)</th></tr>
+          </thead>
+          <tbody>
+            {% for r in rows %}
+            <tr>
+              <td>{{ r.date }}</td>
+              <td>{{ NAME_MAP[r.payer] }}</td>
+              <td>{{ r.item }}</td>
+              <td class="right">{{ '%.2f'|format(r.amount) }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p>No expenses this month.</p>
+      {% endif %}
+    </section>
+
+    <footer>
+      <small>Tip: Use delete from the main screen if you made a mistake.</small>
+    </footer>
+  </div>
+</body>
+</html>

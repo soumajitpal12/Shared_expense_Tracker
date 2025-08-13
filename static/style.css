@@ -1,0 +1,48 @@
+/* Simple responsive styling */
+:root {
+  --bg: #f5f7fb;
+  --card: #ffffff;
+  --accent: #3b82f6;
+  --muted: #6b7280;
+  --danger: #ef4444;
+}
+
+* { box-sizing: border-box; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
+body { margin:0; background:var(--bg); color:#111827; padding:16px; }
+
+.container { max-width:900px; margin:12px auto; }
+header { text-align:center; margin-bottom:12px; }
+h1 { margin:4px 0; font-size:1.6rem; }
+.subtitle { color:var(--muted); margin-top:2px; }
+
+.card { background:var(--card); padding:16px; border-radius:12px; box-shadow: 0 6px 18px rgba(15,23,42,0.06); margin-bottom:14px; }
+
+.form .row { display:flex; gap:10px; align-items:center; margin-bottom:10px; }
+.form label { min-width:80px; color:var(--muted); font-size:0.95rem; }
+.form input[type="text"], .form input[type="number"], .form input[type="date"], .form select {
+  flex:1; padding:8px 10px; border:1px solid #e6e9ef; border-radius:8px;
+}
+
+.btn { background:var(--accent); color:white; padding:8px 12px; border-radius:8px; border:none; cursor:pointer; text-decoration:none; display:inline-block; }
+.btn.outline { background:transparent; color:var(--accent); border:1px solid #dbeafe; }
+.btn.small { padding:6px 8px; font-size:0.85rem; }
+.btn.red { background:var(--danger); }
+
+.table { width:100%; border-collapse:collapse; margin-top:8px; }
+.table th, .table td { padding:8px 6px; border-bottom:1px solid #f1f5f9; text-align:left; font-size:0.95rem; }
+.table thead th { color:var(--muted); font-size:0.88rem; }
+.right { text-align:right; }
+.center { text-align:center; }
+
+.summary-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:12px; margin-top:10px; }
+.box { background:#f8fafc; padding:12px; border-radius:8px; text-align:center; }
+.big { font-size:1.25rem; font-weight:600; margin:6px 0; }
+.result .message { font-weight:600; color:#111827; }
+
+footer { text-align:center; color:var(--muted); margin-top:8px; font-size:0.9rem; }
+
+/* small screens */
+@media (max-width:560px) {
+  .form .row { flex-direction:column; align-items:flex-start; }
+  .form label { min-width:0; }
+}
