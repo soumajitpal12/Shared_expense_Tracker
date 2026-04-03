@@ -39,8 +39,8 @@ init_db()
 
 # Friendly names shown in UI and exports
 NAME_MAP = {
-    "me": "Souma",
-    "her": "Rai"
+    "me": "YourName",
+    "her": "HerName"
 }
 
 @app.route("/", methods=["GET"])
